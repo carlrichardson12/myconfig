@@ -49,12 +49,14 @@ sudo docker run -d \
 
 
 
-docker rm -f cam-stream
+sudo docker rm -f cam-stream
 
-docker run -d \
+sudo docker run -d \
   --name cam-stream \
   --privileged \
   -v /dev/video10:/dev/video0 \
   -p 8080:8080 \
   patsoffice/mjpg-streamer
 
+
+modprobe: FATAL: Module v4l2loopback not found in directory /lib/modules/5.15.32-v7l+
