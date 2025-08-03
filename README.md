@@ -106,5 +106,10 @@ else
   echo "⚠️ Warning: /dev/video10 not found. Reboot may be required."
 fi
 
+Building v4l2-loopback driver...
+make -C /lib/modules/`uname -r`/build M=/tmp/v4l2loopback KCPPFLAGS="-DSNAPSHOT_VERSION='"0.15.1"'" modules
+make[1]: *** /lib/modules/5.15.32-v7l+/build: No such file or directory.  Stop.
+make: *** [Makefile:53: v4l2loopback.ko] Error 2
+
 
 
