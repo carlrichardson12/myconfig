@@ -7,6 +7,17 @@ docker run -d \
   lsioarmhf/mjpg-streamer
 
 
+  docker run -d \
+  --name cam-stream \
+  --privileged \
+  -v /dev/video0:/dev/video0 \
+  -p 8080:8080 \
+  -e RESOLUTION="1280x720" \
+  -e FPS="15" \
+  undermozes/mjpg-streamer
+
+
+
 
   sudo apt install v4l2loopback-dkms
   
