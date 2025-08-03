@@ -48,3 +48,13 @@ sudo docker run -d \
   http://10.0.0.96:8080/?action=stream
 
 
+
+docker rm -f cam-stream
+
+docker run -d \
+  --name cam-stream \
+  --privileged \
+  -v /dev/video10:/dev/video0 \
+  -p 8080:8080 \
+  patsoffice/mjpg-streamer
+
