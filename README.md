@@ -59,4 +59,52 @@ sudo docker run -d \
   patsoffice/mjpg-streamer
 
 
-modprobe: FATAL: Module v4l2loopback not found in directory /lib/modules/5.15.32-v7l+
+sudo apt update
+sudo apt install raspberrypi-kernel-headers build-essential git dkms
+uname -r
+git clone https://github.com/umlaeute/v4l2loopback.git
+cd v4l2loopback
+make
+sudo make install
+sudo modprobe v4l2loopback video_nr=10 card_label="VirtualCam" exclusive_caps=1
+
+ls -l /dev/video10
+echo "v4l2loopback video_nr=10 card_label=VirtualCam exclusive_caps=1" | sudo tee /etc/modules-load.d/v4l2loopback.conf
+
+
+#!/bin/bash
+
+set -e
+
+echo "🔧 Updating system and installing dependencies..."
+sudo apt update
+sudo apt install -y git build-essential raspberrypi-kernel-headers dkms
+
+echo "📁 Cloning v4l2loopback repo..."
+git clone https://github.com/umlaeute/v4l2loopback.git /tmp/v4l2loopback
+cd /tmp/v4l2loopback
+
+echo "🛠️ Building v4l2loopback kernel module..."
+make
+
+echo "📦 Installing the module..."
+sudo make install
+
+echo "📂 Creating autoload config..."
+echo "v4l2loopback video_nr=10 card_label=VirtualCam exclusive_caps=1" | \
+  sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
+
+echo "📥 Loading v4l2loopback module now..."
+sudo modprobe v4l2loopback video_nr=10 card_label="VirtualCam" exclusive_caps=1
+
+echo "✅ Done!"
+echo "🎥 Checking for /dev/video10..."
+
+if [ -e /dev/video10 ]; then
+  echo "🎉 Success: /dev/video10 is ready."
+else
+  echo "⚠️ Warning: /dev/video10 not found. Reboot may be required."
+fi
+
+
+
